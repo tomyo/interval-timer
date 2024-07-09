@@ -81,27 +81,20 @@
         transition: all ease-in-out 0.2s;
       }
 
+      header {
+        text-align: center;
+        overflow: hidden; /* bugfix for h1 margin-top bleading outside the body and causing overflow in the body */
+
+        h1 {
+          margin-block: 3rem;
+        }
+      }
+
       input {
         border: none;
         background: none;
         appearance: textfield;
         font: inherit;
-      }
-
-      header {
-        text-align: center;
-        overflow: hidden; /* bugfix for h1 margin-top bleading outside the body and causing overflow in the body */
-      }
-
-      main {
-        max-width: 400px;
-        margin: 0 auto;
-        padding: 1rem;
-
-        h2 {
-          margin-top: 0;
-          font-size: 1.2em;
-        }
       }
     </style>
     <script src="/components/input-repetitions.js" type="module"></script>
@@ -113,77 +106,68 @@
     </header>
     <main>
       <form action="/timer/">
-        <div class="card">
-          <div class="timer-col">
-            <p class="timer-label">SETS</p>
-            <input-repetitions class="timer-input">
-              <button type="button">-</button>
-              <input value="3" type="number" min="1" name="sets" step="1" />
-              <button type="button">+</button>
-            </input-repetitions>
-          </div>
-          <div class="timer-col" style="display: none">
-            <p class="timer-label">PREPARE</p>
-            <input-duration class="timer-input">
-              <button type="button">-</button>
-              <input
-                value="00"
-                name="preparation-minutes"
-                type="number"
-                min="0"
-              />
-              <span>:</span>
-              <input
-                value="05"
-                name="preparation-seconds"
-                type="number"
-                min="0"
-              />
-              <button type="button">+</button>
-            </input-duration>
-          </div>
-          <div class="timer-col">
-            <p class="timer-label">WORK</p>
-            <input-duration class="timer-input">
-              <button type="button">-</button>
-              <input value="01" name="work-minutes" type="number" min="0" />
-              <span>:</span>
-              <input value="00" name="work-seconds" type="number" min="0" />
-              <button type="button">+</button>
-            </input-duration>
-          </div>
-          <div class="timer-col">
-            <p class="timer-label">REST</p>
-            <input-duration class="timer-input">
-              <button type="button">-</button>
-              <input
-                value="00"
-                name="rest-minutes"
-                type="number"
-                min="0"
-                step="1"
-              /><span>:</span
-              ><input
-                value="20"
-                name="rest-seconds"
-                type="number"
-                step="1"
-                min="0"
-              />
-              <button type="button">+</button>
-            </input-duration>
-          </div>
-          <div class="timer-col" style="display: none">
-            <p class="timer-label">COOLDOWN</p>
-            <input-duration class="timer-input">
-              <button type="button">-</button>
-              <input value="00" name="cooldown-minutes" type="number" min="0" />
-              <span>:</span>
-              <input value="10" name="cooldown-seconds" type="number" min="0" />
-              <button type="button">+</button>
-            </input-duration>
-          </div>
-        </div>
+        <input-repetitions class="timer-input">
+          <h4 style="font-weight: 400">SETS</h4>
+          <button type="button">-</button>
+          <input value="3" type="number" min="1" name="sets" step="1" />
+          <button type="button">+</button>
+        </input-repetitions>
+        <input-duration class="timer-input" style="display: none">
+          <h4 style="font-weight: 400">PREPARE</h4>
+          <button type="button">-</button>
+          <input value="00" name="preparation-minutes" type="number" min="0" />
+          <span>:</span>
+          <input value="05" name="preparation-seconds" type="number" min="0" />
+          <button type="button">+</button>
+        </input-duration>
+        <input-duration class="timer-input">
+          <h4 style="font-weight: 400">WORK</h4>
+          <button type="button">-</button>
+          <input value="01" name="work-minutes" type="number" min="0" />
+          <span>:</span>
+          <input value="00" name="work-seconds" type="number" min="0" />
+          <button type="button">+</button>
+        </input-duration>
+        <input-duration class="timer-input">
+          <h4 style="font-weight: 400">REST</h4>
+          <button type="button">-</button>
+          <input
+            value="00"
+            name="rest-minutes"
+            type="number"
+            min="0"
+            step="1"
+          />
+          <span>:</span
+          ><input
+            value="20"
+            name="rest-seconds"
+            type="number"
+            step="1"
+            min="0"
+          />
+          <button type="button">+</button>
+        </input-duration>
+        <input-duration class="timer-input" style="display: none">
+          <h4 style="font-weight: 400">COOLDOWN</h4>
+          <button type="button">-</button>
+          <input
+            value="00"
+            name="cooldown-minutes"
+            type="number"
+            min="0"
+            step="1"
+          />
+          <span>:</span>
+          <input
+            value="10"
+            name="cooldown-seconds"
+            type="number"
+            min="0"
+            step="1"
+          />
+          <button type="button">+</button>
+        </input-duration>
         <footer>
           <button>⚡ START</button>
           <!-- <button>💾 SAVE</button> -->
@@ -191,61 +175,53 @@
       </form>
     </main>
     <style>
-      input-duration {
-        display: flex;
-        align-items: center;
+      main {
+        max-width: 400px;
+        margin: 0 auto;
       }
 
-      footer button {
-        display: block;
-        background-color: #3498db;
-        border: none;
-        color: white;
-        padding: 10px 20px;
+      form {
+        display: grid;
+        gap: 1rem;
         text-align: center;
-        text-decoration: none;
-        font-size: 16px;
-        margin-top: 2rem;
-        cursor: pointer;
-        border-radius: 5px;
-        width: 80%;
-        background-color: #546f7a;
-        margin-inline: auto;
-      }
 
-      .card {
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 20px;
-        .timer-col {
-          display: grid;
-          justify-content: center;
-          align-items: center;
-          margin-bottom: 15px;
+        input-duration,
+        input-repetitions {
+          button {
+            background-color: #34495e;
+            border: none;
+            color: white;
+            font-size: 1.2em;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-inline: 1rem;
+          }
+
+          input {
+            width: 3ch;
+            text-align: center;
+            font: inherit;
+            font-size: 1.2rem;
+          }
+        }
+
+        footer button {
+          display: block;
+          background-color: #3498db;
+          border: none;
+          color: white;
+          padding: 10px 20px;
           text-align: center;
-
-          .timer-label {
-            font-size: 0.9em;
-          }
-          .timer-input {
-            button {
-              background-color: #34495e;
-              border: none;
-              color: white;
-              font-size: 1.2em;
-              width: 30px;
-              height: 30px;
-              border-radius: 5px;
-              cursor: pointer;
-            }
-
-            input {
-              width: 3ch;
-              text-align: center;
-              margin-inline: 1ch;
-              font: inherit;
-            }
-          }
+          text-decoration: none;
+          font-size: 16px;
+          margin-top: 3rem;
+          cursor: pointer;
+          border-radius: 5px;
+          width: 80%;
+          background-color: #546f7a;
+          margin-inline: auto;
         }
       }
     </style>
