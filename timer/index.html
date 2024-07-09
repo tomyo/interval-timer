@@ -95,7 +95,7 @@
         place-content: center;
         height: 100%;
         text-align: center;
-        font-size: 2rem;
+        font-size: 1.5rem;
       }
 
       #startButton {
@@ -110,8 +110,8 @@
         margin-top: 1rem;
         cursor: pointer;
         border-radius: 5px;
-        width: 100%;
-        background-color: #546f7a;
+        width: 10rem;
+        margin: 2rem auto;
       }
     </style>
   </head>
@@ -135,11 +135,9 @@
         <input value="00" name="cooldown-seconds" type="number" />
       </form>
 
-      <button id="startButton" onclick="startIntervalTimer()">Start</button>
+      <button id="startButton" onclick="startIntervalTimer()">START</button>
     </main>
     <script>
-      // import { assert } from "/utils.js";
-
       let intervalId, activities, currentActivity, audioContext, soundVolume;
 
       function* getActivities({ startAt = "preparation" } = {}) {
