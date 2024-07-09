@@ -114,7 +114,6 @@
     <main>
       <form action="/timer/">
         <div class="card">
-          <h2><input value="Quickstart" /></h2>
           <div class="timer-col">
             <p class="timer-label">SETS</p>
             <input-repetitions class="timer-input">
@@ -184,16 +183,34 @@
               <button type="button">+</button>
             </input-duration>
           </div>
-          <button class="start-button">⚡ START</button>
         </div>
+        <footer>
+          <button>⚡ START</button>
+          <!-- <button>💾 SAVE</button> -->
+        </footer>
       </form>
-
-      <!-- <h2>YOUR PRESETS</h2> -->
     </main>
     <style>
       input-duration {
         display: flex;
         align-items: center;
+      }
+
+      footer button {
+        display: block;
+        background-color: #3498db;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        margin-top: 2rem;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 80%;
+        background-color: #546f7a;
+        margin-inline: auto;
       }
 
       .card {
@@ -229,21 +246,6 @@
               font: inherit;
             }
           }
-        }
-        .start-button {
-          background-color: #3498db;
-          border: none;
-          color: white;
-          padding: 10px 20px;
-          text-align: center;
-          text-decoration: none;
-          display: inline-block;
-          font-size: 16px;
-          margin-top: 1rem;
-          cursor: pointer;
-          border-radius: 5px;
-          width: 100%;
-          background-color: #546f7a;
         }
       }
     </style>
