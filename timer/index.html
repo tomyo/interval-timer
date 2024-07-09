@@ -95,7 +95,7 @@
         place-content: center;
         height: 100%;
         text-align: center;
-        font-size: 1.5rem;
+        font-size: 2rem;
       }
 
       #startButton {
@@ -179,7 +179,8 @@
 
       function setActivity(act) {
         currentActivity = act;
-        activity.textContent = currentActivity;
+        activity.textContent =
+          currentActivity == "preparation" ? "prepare" : currentActivity;
         setNewTimerFor(currentActivity);
 
         // bg color
