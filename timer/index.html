@@ -159,16 +159,21 @@
         return Number(minutes.textContent) * 60 + Number(seconds.textContent);
       }
 
-      function startIntervalTimer() {
+      function setUpIntervalTimer() {
         activities = getActivities();
-        startButton.style.display = "none";
 
         do {
           setActivity(activities.next().value);
           set.textContent = document.querySelector("input[name=sets]").value;
         } while (!getCurrentActivityDuration());
-        playBeep();
+      }
 
+      function startIntervalTimer() {
+        if (!activities) setUpIntervalTimer();
+
+        startButton.style.display = "none";
+
+        playBeep();
         intervalId = setInterval(tick, 1000);
       }
 
@@ -251,14 +256,6 @@
         minutes.textContent = m.toString().padStart(2, "0");
       }
 
-      // function initAudio() {
-      //   assert(!audioContext, "Audio already initialized");
-
-      //   audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-      //   return audioContext;
-      // }
-
       /**
        * Play a beep sound
        * @param {AudioContext} audioContext The audio context to use, a new is created if not provided
@@ -315,9 +312,11 @@
     </script>
 
     <script type="module">
+      // Init setup
       import { fillInputsFromURLParams } from "/lib/fillInputsFromURLParams.js";
 
       fillInputsFromURLParams();
+      setUpIntervalTimer();
     </script>
   </body>
 </html>
