@@ -118,51 +118,72 @@
           <h2><input value="Quickstart" /></h2>
           <div class="timer-col">
             <p class="timer-label">SETS</p>
-            <div class="timer-input">
-              <input-repetitions>
-                <button type="button">-</button>
-                <input value="1" type="number" min="1" name="sets" step="1" />
-                <button type="button">+</button>
-              </input-repetitions>
-            </div>
+            <input-repetitions class="timer-input">
+              <button type="button">-</button>
+              <input value="3" type="number" min="1" name="sets" step="1" />
+              <button type="button">+</button>
+            </input-repetitions>
+          </div>
+          <div class="timer-col" style="display: none">
+            <p class="timer-label">PREPARE</p>
+            <input-duration class="timer-input">
+              <button type="button">-</button>
+              <input
+                value="00"
+                name="preparation-minutes"
+                type="number"
+                min="0"
+              />
+              <span>:</span>
+              <input
+                value="05"
+                name="preparation-seconds"
+                type="number"
+                min="0"
+              />
+              <button type="button">+</button>
+            </input-duration>
           </div>
           <div class="timer-col">
             <p class="timer-label">WORK</p>
-            <div class="timer-input">
-              <input-duration>
-                <button type="button">-</button>
-                <input
-                  value="00"
-                  name="work-minutes"
-                  type="number"
-                  min="0"
-                /><span>:</span
-                ><input value="00" name="work-seconds" type="number" min="0" />
-                <button type="button">+</button>
-              </input-duration>
-            </div>
+            <input-duration class="timer-input">
+              <button type="button">-</button>
+              <input value="01" name="work-minutes" type="number" min="0" />
+              <span>:</span>
+              <input value="00" name="work-seconds" type="number" min="0" />
+              <button type="button">+</button>
+            </input-duration>
           </div>
           <div class="timer-col">
             <p class="timer-label">REST</p>
-            <div class="timer-input">
-              <input-duration>
-                <button type="button">-</button>
-                <input
-                  value="00"
-                  name="rest-minutes"
-                  type="number"
-                  min="0"
-                /><span>:</span
-                ><input
-                  value="00"
-                  name="rest-seconds"
-                  type="number"
-                  step="01"
-                  min="0"
-                />
-                <button type="button">+</button>
-              </input-duration>
-            </div>
+            <input-duration class="timer-input">
+              <button type="button">-</button>
+              <input
+                value="00"
+                name="rest-minutes"
+                type="number"
+                min="0"
+                step="1"
+              /><span>:</span
+              ><input
+                value="20"
+                name="rest-seconds"
+                type="number"
+                step="1"
+                min="0"
+              />
+              <button type="button">+</button>
+            </input-duration>
+          </div>
+          <div class="timer-col" style="display: none">
+            <p class="timer-label">COOLDOWN</p>
+            <input-duration class="timer-input">
+              <button type="button">-</button>
+              <input value="00" name="cooldown-minutes" type="number" min="0" />
+              <span>:</span>
+              <input value="10" name="cooldown-seconds" type="number" min="0" />
+              <button type="button">+</button>
+            </input-duration>
           </div>
           <button class="start-button">⚡ START</button>
         </div>
@@ -191,9 +212,6 @@
             font-size: 0.9em;
           }
           .timer-input {
-            display: flex;
-            align-items: center;
-
             button {
               background-color: #34495e;
               border: none;
