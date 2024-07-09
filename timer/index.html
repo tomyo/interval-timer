@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Temporizador de intervalos</title>
+    <meta
+      name="Description"
+      content="Temporizador de intervalos simple y facil de usar."
+    />
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Interval Timer" />
+    <meta property="og:image" content="" />
+    <meta property="og:image" content="" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="720" />
+    <meta property="og:url" content="" />
+    <meta property="og:type" content="website" />
+
+    <meta property="og:locale" content="en" />
+    <meta
+      property="og:description"
+      content="Simple and easy to use all purposes interval timer."
+    />
+
+    <meta property="og:locale" content="es" />
+    <meta
+      property="og:description"
+      content="Simple y fácil de usar temporizador de intervalos multipropósito."
+    />
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="64x64"
+      href="/assets/images/favicon-64x64.png"
+    />
+
+    <style>
+      /* Reset */
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        min-height: 100%;
+        font-size: 100%;
+        line-height: 1.25;
+        scroll-behavior: smooth;
+      }
+
+      /* Global styles */
+
+      /* <theme> */
+      [data-theme="🌑"] {
+        --color-scheme: dark;
+        color-scheme: dark;
+      }
+
+      [data-theme="☀️"] {
+        --color-scheme: light;
+        color-scheme: light;
+      }
+
+      :root {
+        --color: light-dark(#1e2730, #fafafa);
+        --background-color: light-dark(#fafafa, #1e2730);
+        color-scheme: var(--color-scheme, dark light);
+      }
+      /* </theme> */
+
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+        background-color: var(--background-color);
+        color: var(--color);
+
+        transition: all ease-in-out 0.2s;
+      }
+
+      input {
+        border: none;
+        background: none;
+        appearance: textfield;
+        font: inherit;
+      }
+
+      main {
+        display: grid;
+        place-content: center;
+        height: 100%;
+        text-align: center;
+        font-size: 2rem;
+      }
+
+      #startButton {
+        background-color: #3498db;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin-top: 1rem;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 100%;
+        background-color: #546f7a;
+      }
+    </style>
+  </head>
+  <body>
+    <header></header>
+    <main>
+      <h3 id="set">1</h3>
+      <h1><span id="minutes">00</span>:<span id="seconds">00</span></h1>
+      <h2 id="activity" style="text-transform: uppercase; opacity: 0.7"></h2>
+
+      <form style="display: none">
+        <input value="3" name="sets" type="number" />
+
+        <input value="00" name="preparation-minutes" type="number" />
+        <input value="00" name="preparation-seconds" type="number" />
+        <input value="01" name="work-minutes" type="number" />
+        <input value="00" name="work-seconds" type="number" />
+        <input value="00" name="rest-minutes" type="number" />
+        <input value="00" name="rest-seconds" type="number" />
+        <input value="00" name="cooldown-minutes" type="number" />
+        <input value="00" name="cooldown-seconds" type="number" />
+      </form>
+
+      <button id="startButton" onclick="startIntervalTimer()">Start</button>
+    </main>
+    <script>
+      // import { assert } from "/utils.js";
+
+      let intervalId, activities, currentActivity, audioContext, soundVolume;
+
+      function* getActivities({ startAt = "preparation" } = {}) {
+        let started = false;
+        for (const activity of ["preparation", "work", "rest", "cooldown"]) {
+          if (!started) {
+            if (activity == startAt) started = true;
+            if (activity != startAt) continue;
+          }
+          yield activity;
+        }
+      }
+
+      /**
+       * Get the current activity duration in seconds
+       * @returns {number} The current activity duration in seconds
+       */
+      function getCurrentActivityDuration() {
+        return Number(minutes.textContent) * 60 + Number(seconds.textContent);
+      }
+
+      function startIntervalTimer() {
+        activities = getActivities();
+        startButton.style.display = "none";
+
+        do {
+          setActivity(activities.next().value);
+          set.textContent = document.querySelector("input[name=sets]").value;
+        } while (!getCurrentActivityDuration());
+        playBeep();
+
+        intervalId = setInterval(tick, 1000);
+      }
+
+      function setActivity(act) {
+        currentActivity = act;
+        activity.textContent = currentActivity;
+        setNewTimerFor(currentActivity);
+
+        // bg color
+        let color = "#1a7cbd"; // rest and cooldown
+        if (currentActivity == "preparation") color = "#c85100";
+        if (currentActivity == "work") color = "#008943";
+
+        document.documentElement.style.setProperty("--background-color", color);
+      }
+
+      function setNewTimerFor(activity) {
+        minutes.textContent = document.querySelector(
+          `[name=${currentActivity}-minutes]`
+        ).value;
+        seconds.textContent = document.querySelector(
+          `[name=${currentActivity}-seconds]`
+        ).value;
+      }
+
+      function finish() {
+        clearInterval(intervalId);
+        playBeep({ times: 3 });
+      }
+      function isCurrentSetLast() {
+        return set.textContent == 1;
+      }
+
+      function nextActivity() {
+        if (currentActivity == "work" && isCurrentSetLast())
+          // When working on the last set, we'll skip the rest activity.
+          // We are either done or we are going to cooldown.
+          activities.next();
+
+        if (currentActivity == "rest") {
+          assert(
+            !isCurrentSetLast(),
+            `We shouldn't be resting as a last activity, work or cooldown can only be the last activity.`
+          );
+          // Start over with the first workout activity (skip preparation)
+          activities = getActivities({ startAt: "work" });
+          set.textContent -= 1;
+        }
+
+        if (currentActivity == "cooldown") return finish();
+
+        // Normal flow where a next activity is available
+        setActivity(activities.next().value);
+
+        if (!getCurrentActivityDuration()) {
+          // Probably a cooldown or rest activity not set (thus having no duration)
+          nextActivity();
+        }
+
+        playBeep();
+      }
+
+      function tick() {
+        let m = Number(minutes.textContent);
+        let s = Number(seconds.textContent);
+
+        // A second passed
+        if (s == 0) {
+          m = m - 1;
+          s = 59;
+        } else {
+          s = s - 1;
+        }
+
+        if (m == 0 && s == 0) {
+          return nextActivity();
+        }
+
+        seconds.textContent = s.toString().padStart(2, "0");
+        minutes.textContent = m.toString().padStart(2, "0");
+      }
+
+      // function initAudio() {
+      //   assert(!audioContext, "Audio already initialized");
+
+      //   audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+      //   return audioContext;
+      // }
+
+      /**
+       * Play a beep sound
+       * @param {AudioContext} audioContext The audio context to use, a new is created if not provided
+       * @returns {AudioContext} The audio context
+       */
+      function playBeep({ volume = 0.5, length = 0.2, times = 1 } = {}) {
+        if (!audioContext)
+          audioContext = new (window.AudioContext ||
+            window.webkitAudioContext)();
+
+        const oscillator = audioContext.createOscillator();
+        oscillator.type = "sine"; // You can also use 'square', 'sawtooth', 'triangle'
+
+        // Create a gain node to control volume
+        const gainNode = audioContext.createGain();
+
+        // Connect the gain node to the destination to control the output volume
+        gainNode.connect(audioContext.destination);
+
+        // Connect the oscillator to the gain node
+        oscillator.connect(gainNode);
+
+        // Set the frequency of the oscillator (in Hz)
+        const f5 = 698.46;
+        const f_5 = 739.99;
+        oscillator.frequency.setValueAtTime(f_5, audioContext.currentTime);
+
+        // Set the volume of the oscillator
+        volume = Math.min(1, Math.max(0, volume));
+        gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+
+        // Start the oscillator
+        oscillator.start();
+
+        oscillator.stop(audioContext.currentTime + length);
+
+        // Call itself recursively repeate the beeb `times` times.
+        oscillator.onended = () => {
+          if (times > 1) {
+            setTimeout(() => {
+              playBeep({ volume, length, times: times - 1 });
+            }, length * 1000); // Use same audio length for pause length
+          }
+        };
+
+        return audioContext;
+      }
+
+      function assert(condition, message) {
+        if (!condition) {
+          throw new Error(message || "Assertion failed");
+        }
+      }
+    </script>
+
+    <script type="module">
+      import { fillInputsFromURLParams } from "/lib/fillInputsFromURLParams.js";
+
+      fillInputsFromURLParams();
+    </script>
+  </body>
+</html>

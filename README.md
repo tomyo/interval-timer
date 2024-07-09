@@ -1,2 +1,3 @@
-# interval-timer
-Simple and easy to use all purposes interval timer.
+# Interval Timer
+
+Simple and easy to use all purposes interval timer webapp.
