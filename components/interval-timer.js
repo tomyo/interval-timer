@@ -48,11 +48,28 @@ customElements.define(
       if (!activities) this.setUpIntervalTimer();
 
       playBeep();
-      intervalId = setInterval(tick, 1000);
+      intervalId = setInterval(this.tick, 1000);
     }
 
-    showOptions() {
-      this.style.backgroundColor = "red";
+    setCurrentActivity(act) {
+      currentActivity = act;
+
+      this.activity.textContent =
+        currentActivity == "preparation" ? "prepare" : currentActivity; // Preparation is too long
+
+      this.minutes.textContent = this.querySelector(
+        `[name=${currentActivity}-minutes]`
+      ).value;
+      this.seconds.textContent = this.querySelector(
+        `[name=${currentActivity}-seconds]`
+      ).value;
+
+      // bg color
+      let color = "#1a7cbd"; // rest and cooldown
+      if (currentActivity == "preparation") color = "#c85100";
+      if (currentActivity == "work") color = "#008943";
+
+      document.documentElement.style.setProperty("--background-color", color);
     }
 
     /**
@@ -98,6 +115,19 @@ customElements.define(
       playBeep();
     }
 
+    previousActivity() {
+      if (ACTIVITIES.indexOf(currentActivity) < 1) return;
+
+      this.setCurrentActivity(
+        ACTIVITIES[ACTIVITIES.indexOf(currentActivity) - 1]
+      );
+      // TODO: skip last rest activity when going back from cooldown
+    }
+
+    /**
+     * Tick the timer one second
+     * @returns {void}
+     */
     tick = () => {
       let m = Number(this.minutes.textContent);
       let s = Number(this.seconds.textContent);
@@ -118,38 +148,25 @@ customElements.define(
       this.minutes.textContent = m.toString().padStart(2, "0");
     };
 
-    setCurrentActivity(act) {
-      currentActivity = act;
-
-      this.activity.textContent =
-        currentActivity == "preparation" ? "prepare" : currentActivity; // Preparation is too long
-
-      this.minutes.textContent = this.querySelector(
-        `[name=${currentActivity}-minutes]`
-      ).value;
-      this.seconds.textContent = this.querySelector(
-        `[name=${currentActivity}-seconds]`
-      ).value;
-
-      // bg color
-      let color = "#1a7cbd"; // rest and cooldown
-      if (currentActivity == "preparation") color = "#c85100";
-      if (currentActivity == "work") color = "#008943";
-
-      document.documentElement.style.setProperty("--background-color", color);
-    }
-
     startIntervalTimer() {
+      if (intervalId) return console.warn("Timer already running");
       if (!activities) this.setUpIntervalTimer();
-
-      startButton.style.display = "none";
 
       playBeep();
       intervalId = setInterval(this.tick, 1000);
+      this.setAttribute("running", "");
+    }
+
+    pauseIntervalTimer() {
+      if (!intervalId) return console.warn("Timer not running");
+      intervalId = clearInterval(intervalId);
+      this.removeAttribute("running");
     }
 
     finish() {
-      clearInterval(intervalId);
+      if (!intervalId) return;
+
+      this.pauseIntervalTimer();
       playBeep({ times: 3 });
     }
   }
