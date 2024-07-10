@@ -241,44 +241,27 @@
       // Setup
 
       import { fillInputsFromURLParams } from "/lib/fillInputsFromURLParams.js";
+      import { debounce, throttle, assert } from "/lib/utils.js";
 
       fillInputsFromURLParams();
       intervalTimer.setUpIntervalTimer();
 
-      // Show/Hide controls
+      // Show/Hide controls when cliking the it's content
+
+      const hideAfterSomeTime = debounce(() => {
+        if (intervalTimer.hasAttribute("running"))
+          // Hide controls after runnig for some time
+          intervalTimerControl.removeAttribute("show");
+      }, 2000);
+
       intervalTimer.addEventListener("click", (event) => {
-        if (event.composedPath().includes(intervalTimerControl)) {
-          return;
-        }
-
         if (!intervalTimer.hasAttribute("running"))
-          return intervalTimerControl.setAttribute("show", "");
+          // If timer is paused, controls should be visible already.
+          assert(intervalTimerControl.hasAttribute("show"));
 
-        // While runnig, show quick and hide slow
-        let timeout = intervalTimerControl.hasAttribute("show") ? 2000 : 0;
-        setTimeout(() => {
-          intervalTimerControl.toggleAttribute("show");
-
-          if (intervalTimer.hasAttribute("running")) {
-            // Hide controls after runnig for some time
-            setTimeout(() => {
-              intervalTimerControl.removeAttribute("show");
-            }, 2000);
-          }
-        }, timeout);
+        intervalTimerControl.setAttribute("show", "");
+        hideAfterSomeTime();
       });
-
-      intervalTimerControl.addEventListener("click", (event) => {
-        setTimeout(() => {
-          if (intervalTimer.hasAttribute("running"))
-            // Hide controls after runnig for some time
-            intervalTimerControl.removeAttribute("show");
-        }, 2000);
-      });
-
-      function hideControls() {
-        intervalTimerControl.removeAttribute("show");
-      }
     </script>
   </body>
 </html>
