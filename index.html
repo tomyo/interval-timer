@@ -112,13 +112,13 @@
     <main>
       <form action="/timer/">
         <input-repetitions class="timer-input">
-          <h4 style="font-weight: 400">SETS</h4>
+          <h4 style="font-weight: 400" title="How many repetitions?">SETS</h4>
           <button type="button">-</button>
           <input value="3" type="number" min="1" name="sets" step="1" />
           <button type="button">+</button>
         </input-repetitions>
         <input-duration class="timer-input" style="display: none">
-          <h4 style="font-weight: 400">PREPARE</h4>
+          <h4 style="font-weight: 400" title="How long to prepare?">PREPARE</h4>
           <button type="button">-</button>
           <input value="00" name="preparation-minutes" type="number" min="0" />
           <span>:</span>
@@ -126,7 +126,7 @@
           <button type="button">+</button>
         </input-duration>
         <input-duration class="timer-input">
-          <h4 style="font-weight: 400">WORK</h4>
+          <h4 style="font-weight: 400" title="How long to work?">WORK</h4>
           <button type="button">-</button>
           <input value="01" name="work-minutes" type="number" min="0" />
           <span>:</span>
@@ -134,7 +134,12 @@
           <button type="button">+</button>
         </input-duration>
         <input-duration class="timer-input">
-          <h4 style="font-weight: 400">REST</h4>
+          <h4
+            style="font-weight: 400"
+            title="How long to rest between workouts?"
+          >
+            REST
+          </h4>
           <button type="button">-</button>
           <input
             value="00"
@@ -154,7 +159,9 @@
           <button type="button">+</button>
         </input-duration>
         <input-duration class="timer-input" style="display: none">
-          <h4 style="font-weight: 400">COOLDOWN</h4>
+          <h4 style="font-weight: 400" title="How long is the final rest time?">
+            COOLDOWN
+          </h4>
           <button type="button">-</button>
           <input
             value="00"

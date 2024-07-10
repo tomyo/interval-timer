@@ -156,6 +156,8 @@ customElements.define(
             [name="pause"], [name="play"], [name="next"], [name="prev"] {
               display: none;
             }
+
+            margin-top: 4rem;
           }
         </style>
       `;
