@@ -115,50 +115,144 @@
         width: 10rem;
         margin: 2rem auto;
       }
+
+      @keyframes hideContent {
+        0% {
+          opacity: 1;
+          visibility: visible;
+        }
+        100% {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+
+      @keyframes showContent {
+        0% {
+          opacity: 0;
+          visibility: hidden;
+        }
+        100% {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+
+      interval-timer {
+        user-select: none;
+
+        &[running] {
+          button[name="play"] {
+            display: none;
+          }
+        }
+
+        &:not([running]) button[name="pause"] {
+          display: none;
+        }
+
+        interval-timer-controls {
+          display: flex;
+          justify-content: center;
+          gap: 3rem;
+
+          &:not([show]) {
+            animation: hideContent 1s ease-in forwards;
+          }
+          &[show] {
+            animation: showContent 1s ease-out forwards;
+          }
+
+          button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+
+            &[name="prev"],
+            &[name="next"] {
+              opacity: 0.7;
+            }
+          }
+        }
+      }
     </style>
   </head>
   <body>
     <main>
-      <interval-timer-menu>
-        <interval-timer id="intervalTimer">
-          <h3 slot="set">1</h3>
-          <h1><span slot="minutes">00</span>:<span slot="seconds">00</span></h1>
-          <h2
-            slot="activity"
-            style="text-transform: uppercase; opacity: 0.7"
-          ></h2>
+      <interval-timer id="intervalTimer">
+        <h3 slot="set">1</h3>
+        <h1><span slot="minutes">00</span>:<span slot="seconds">00</span></h1>
+        <h2
+          slot="activity"
+          style="text-transform: uppercase; opacity: 0.7"
+        ></h2>
 
-          <form style="display: none">
-            <!-- interval-timer "arguments" -->
-            <input value="3" name="sets" type="number" />
-            <input value="00" name="preparation-minutes" type="number" />
-            <input value="00" name="preparation-seconds" type="number" />
-            <input value="01" name="work-minutes" type="number" />
-            <input value="00" name="work-seconds" type="number" />
-            <input value="00" name="rest-minutes" type="number" />
-            <input value="20" name="rest-seconds" type="number" />
-            <input value="00" name="cooldown-minutes" type="number" />
-            <input value="00" name="cooldown-seconds" type="number" />
-          </form>
+        <form style="display: none">
+          <!-- interval-timer "arguments" -->
+          <input value="3" name="sets" type="number" />
+          <input value="00" name="preparation-minutes" type="number" />
+          <input value="00" name="preparation-seconds" type="number" />
+          <input value="01" name="work-minutes" type="number" />
+          <input value="00" name="work-seconds" type="number" />
+          <input value="00" name="rest-minutes" type="number" />
+          <input value="20" name="rest-seconds" type="number" />
+          <input value="00" name="cooldown-minutes" type="number" />
+          <input value="00" name="cooldown-seconds" type="number" />
+        </form>
 
-          <button id="startButton" type="button">START</button>
-        </interval-timer>
-      </interval-timer-menu>
+        <interval-timer-controls
+          show
+          id="intervalTimerControl"
+        ></interval-timer-controls>
+      </interval-timer>
     </main>
     <script src="/components/interval-timer.js" type="module"></script>
+    <script src="/components/interval-timer-controls.js" type="module"></script>
     <script></script>
 
     <script type="module">
-      // Init setup
+      // Setup
+
       import { fillInputsFromURLParams } from "/lib/fillInputsFromURLParams.js";
 
       fillInputsFromURLParams();
       intervalTimer.setUpIntervalTimer();
 
-      startButton.addEventListener("click", () => {
-        startButton.style.display = "none";
-        intervalTimer.startIntervalTimer();
+      intervalTimer.addEventListener("click", (event) => {
+        if (event.composedPath().includes(intervalTimerControl)) {
+          return;
+        }
+
+        if (!intervalTimer.hasAttribute("running"))
+          return intervalTimerControl.setAttribute("show", "");
+
+        // While runnig, show quick and hide slow
+        let timeout = intervalTimerControl.hasAttribute("show") ? 2000 : 0;
+        setTimeout(() => {
+          intervalTimerControl.toggleAttribute("show");
+
+          if (intervalTimer.hasAttribute("running")) {
+            // Hide controls after runnig for some time
+            setTimeout(() => {
+              intervalTimerControl.removeAttribute("show");
+            }, 2000);
+          }
+        }, timeout);
       });
+
+      intervalTimerControl.addEventListener("click", (event) => {
+        setTimeout(() => {
+          if (intervalTimer.hasAttribute("running"))
+            // Hide controls after runnig for some time
+            intervalTimerControl.removeAttribute("show");
+        }, 2000);
+      });
+
+      function hideControls() {
+        intervalTimerControl.removeAttribute("show");
+      }
     </script>
   </body>
 </html>
