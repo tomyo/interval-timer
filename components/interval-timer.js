@@ -44,13 +44,6 @@ customElements.define(
       } while (!this.getCurrentActivityDuration());
     }
 
-    startIntervalTimer() {
-      if (!activities) this.setUpIntervalTimer();
-
-      playBeep();
-      intervalId = setInterval(this.tick, 1000);
-    }
-
     setCurrentActivity(act) {
       currentActivity = act;
 
@@ -155,6 +148,7 @@ customElements.define(
       playBeep();
       intervalId = setInterval(this.tick, 1000);
       this.setAttribute("running", "");
+      this.removeAttribute("finished");
     }
 
     pauseIntervalTimer() {
@@ -164,10 +158,13 @@ customElements.define(
     }
 
     finish() {
-      if (!intervalId) return;
-
-      this.pauseIntervalTimer();
+      if (this.hasAttribute("finished"))
+        return console.warn("Timer already finished");
+      if (intervalId) this.pauseIntervalTimer();
       playBeep({ times: 3 });
+      this.setAttribute("finished", "");
+      this.activity.textContent = "finished";
+      activities = null;
     }
   }
 );

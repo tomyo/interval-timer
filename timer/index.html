@@ -118,28 +118,6 @@
         margin: 2rem auto;
       }
 
-      @keyframes hideContent {
-        0% {
-          opacity: 1;
-          visibility: visible;
-        }
-        100% {
-          opacity: 0;
-          visibility: hidden;
-        }
-      }
-
-      @keyframes showContent {
-        0% {
-          opacity: 0;
-          visibility: hidden;
-        }
-        100% {
-          opacity: 1;
-          visibility: visible;
-        }
-      }
-
       interval-timer {
         user-select: none;
         display: grid;
@@ -163,6 +141,13 @@
           }
         }
 
+        &[finished] {
+          [slot="set"],
+          [slot="duration"] {
+            display: none;
+          }
+        }
+
         &:not([running]) button[name="pause"] {
           display: none;
         }
@@ -172,15 +157,10 @@
           justify-content: center;
           gap: 3rem;
 
-          &:not([show]) {
-            animation: hideContent 1s ease-in forwards;
-          }
-          &[show] {
-            animation: showContent 1s ease-out forwards;
-          }
-
           button,
           .button {
+            display: grid;
+            place-content: center;
             background: none;
             border: none;
             cursor: pointer;
