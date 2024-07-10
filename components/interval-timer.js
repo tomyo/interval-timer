@@ -47,15 +47,10 @@ customElements.define(
     setCurrentActivity(act) {
       currentActivity = act;
 
-      this.activity.textContent =
-        currentActivity == "preparation" ? "prepare" : currentActivity; // Preparation is too long
+      this.activity.textContent = currentActivity == "preparation" ? "prepare" : currentActivity; // Preparation is too long
 
-      this.minutes.textContent = this.querySelector(
-        `[name=${currentActivity}-minutes]`
-      ).value;
-      this.seconds.textContent = this.querySelector(
-        `[name=${currentActivity}-seconds]`
-      ).value;
+      this.minutes.textContent = this.querySelector(`[name=${currentActivity}-minutes]`).value;
+      this.seconds.textContent = this.querySelector(`[name=${currentActivity}-seconds]`).value;
 
       // bg color
       let color = "#1a7cbd"; // rest and cooldown
@@ -70,9 +65,7 @@ customElements.define(
      * @returns {number} The current activity duration in seconds
      */
     getCurrentActivityDuration() {
-      return (
-        Number(this.minutes.textContent) * 60 + Number(this.seconds.textContent)
-      );
+      return Number(this.minutes.textContent) * 60 + Number(this.seconds.textContent);
     }
 
     isCurrentSetLast() {
@@ -111,9 +104,7 @@ customElements.define(
     previousActivity() {
       if (ACTIVITIES.indexOf(currentActivity) < 1) return;
 
-      this.setCurrentActivity(
-        ACTIVITIES[ACTIVITIES.indexOf(currentActivity) - 1]
-      );
+      this.setCurrentActivity(ACTIVITIES[ACTIVITIES.indexOf(currentActivity) - 1]);
       // TODO: skip last rest activity when going back from cooldown
     }
 
@@ -158,8 +149,7 @@ customElements.define(
     }
 
     finish() {
-      if (this.hasAttribute("finished"))
-        return console.warn("Timer already finished");
+      if (this.hasAttribute("finished")) return console.warn("Timer already finished");
       if (intervalId) this.pauseIntervalTimer();
       playBeep({ times: 3 });
       this.setAttribute("finished", "");
@@ -175,8 +165,7 @@ customElements.define(
  * @returns {AudioContext} The audio context
  */
 function playBeep({ volume = 0.4, length = 0.2, times = 1 } = {}) {
-  if (!audioContext)
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
   const oscillator = audioContext.createOscillator();
   oscillator.type = "sine"; // You can also use 'square', 'sawtooth', 'triangle'

@@ -17,10 +17,8 @@ customElements.define(
     }
 
     handleEvent(event) {
-      if (event.target == this.decButton)
-        this.input.value = Math.max(Number(this.input.value) - 1, MIN_VALUE);
-      if (event.target == this.incButton)
-        this.input.value = Number(this.input.value) + 1;
+      if (event.target == this.decButton) this.input.value = Math.max(Number(this.input.value) - 1, MIN_VALUE);
+      if (event.target == this.incButton) this.input.value = Number(this.input.value) + 1;
     }
   }
 );

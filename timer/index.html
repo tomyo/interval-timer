@@ -5,10 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Temporizador de intervalos</title>
-    <meta
-      name="Description"
-      content="Temporizador de intervalos simple y facil de usar."
-    />
+    <meta name="Description" content="Temporizador de intervalos simple y facil de usar." />
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Interval Timer" />
     <meta property="og:image" content="" />
@@ -19,23 +16,12 @@
     <meta property="og:type" content="website" />
 
     <meta property="og:locale" content="en" />
-    <meta
-      property="og:description"
-      content="Simple and easy to use all purposes interval timer."
-    />
+    <meta property="og:description" content="Simple and easy to use all purposes interval timer." />
 
     <meta property="og:locale" content="es" />
-    <meta
-      property="og:description"
-      content="Simple y fácil de usar temporizador de intervalos multipropósito."
-    />
+    <meta property="og:description" content="Simple y fácil de usar temporizador de intervalos multipropósito." />
 
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="64x64"
-      href="/assets/images/favicon-64x64.png"
-    />
+    <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/favicon-64x64.png" />
 
     <style>
       /* Reset */
@@ -76,9 +62,8 @@
       /* </theme> */
 
       body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-          sans-serif;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+          "Open Sans", "Helvetica Neue", sans-serif;
         background-color: var(--background-color);
         color: var(--color);
 
@@ -170,13 +155,8 @@
     <main>
       <interval-timer id="intervalTimer">
         <h2 slot="set">1</h2>
-        <h1 slot="duration">
-          <span slot="minutes">00</span>:<span slot="seconds">00</span>
-        </h1>
-        <h2
-          slot="activity"
-          style="text-transform: uppercase; opacity: 0.7"
-        ></h2>
+        <h1 slot="duration"><span slot="minutes">00</span>:<span slot="seconds">00</span></h1>
+        <h2 slot="activity" style="text-transform: uppercase; opacity: 0.7"></h2>
 
         <form style="display: none">
           <!-- interval-timer "arguments" -->
@@ -191,10 +171,7 @@
           <input value="00" name="cooldown-seconds" type="number" />
         </form>
 
-        <interval-timer-controls
-          show
-          id="intervalTimerControl"
-        ></interval-timer-controls>
+        <interval-timer-controls show id="intervalTimerControl"></interval-timer-controls>
       </interval-timer>
     </main>
     <script src="/components/interval-timer.js" type="module"></script>

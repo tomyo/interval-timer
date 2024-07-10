@@ -22,12 +22,8 @@ customElements.define(
     handleEvent(event) {
       if (event.target == this.seconds) return (this.toChange = this.seconds);
       if (event.target == this.minutes) return (this.toChange = this.minutes);
-      if (event.target == this.decButton)
-        return this.updateValue(
-          Math.max(Number(this.toChange.value) - 1, MIN_VALUE)
-        );
-      if (event.target == this.incButton)
-        return this.updateValue(Number(this.toChange.value) + 1);
+      if (event.target == this.decButton) return this.updateValue(Math.max(Number(this.toChange.value) - 1, MIN_VALUE));
+      if (event.target == this.incButton) return this.updateValue(Number(this.toChange.value) + 1);
     }
   }
 );
