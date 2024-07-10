@@ -1,8 +1,31 @@
 customElements.define(
   "interval-timer-controls",
   class extends HTMLElement {
+    handleEvent(event) {
+      switch (event.target.closest("button").name) {
+        case "play":
+        case "replay":
+          this.intervalTimer.startIntervalTimer();
+          break;
+        case "pause":
+          this.intervalTimer.pauseIntervalTimer();
+          break;
+        case "prev":
+          this.intervalTimer.previousActivity();
+          break;
+        case "next":
+          this.intervalTimer.nextActivity();
+          break;
+      }
+    }
+
     constructor() {
-      super().innerHTML = /*html*/ `
+      super();
+      this.intervalTimer = this.closest("interval-timer");
+
+      this.addEventListener("click", this);
+
+      this.innerHTML = /*html*/ `
         <a class="button" name="exit" href="/">
           <svg
             viewBox="0 0 1024 1024"
@@ -25,7 +48,6 @@ customElements.define(
         <button
           name="prev"
           title="Previous activity"
-          onclick="intervalTimer.previousActivity()"
         >
           <svg
             width="40px"
@@ -43,7 +65,6 @@ customElements.define(
         <button
           name="pause"
           title="Pause timer"
-          onclick="intervalTimer.pauseIntervalTimer()"
         >
           <svg
             width="40px"
@@ -63,7 +84,6 @@ customElements.define(
         <button
           name="play"
           title="Start timer"
-          onclick="intervalTimer.startIntervalTimer()"
         >
           <svg
             width="40px"
@@ -83,7 +103,6 @@ customElements.define(
         <button
           name="next"
           title="Next activity"
-          onclick="intervalTimer.nextActivity()"
         >
           <svg
             width="40px"
@@ -103,7 +122,6 @@ customElements.define(
         <button
           name="replay"
           title="Again"
-          onclick="intervalTimer.startIntervalTimer()"
         >
         <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 20.75C10.078 20.7474 8.23546 19.9827 6.8764 18.6236C5.51733 17.2645 4.75265 15.422 4.75 13.5C4.75 13.3011 4.82902 13.1103 4.96967 12.9697C5.11032 12.829 5.30109 12.75 5.5 12.75C5.69891 12.75 5.88968 12.829 6.03033 12.9697C6.17098 13.1103 6.25 13.3011 6.25 13.5C6.25 14.6372 6.58723 15.7489 7.21905 16.6945C7.85087 17.6401 8.74889 18.3771 9.79957 18.8123C10.8502 19.2475 12.0064 19.3614 13.1218 19.1395C14.2372 18.9177 15.2617 18.37 16.0659 17.5659C16.87 16.7617 17.4177 15.7372 17.6395 14.6218C17.8614 13.5064 17.7475 12.3502 17.3123 11.2996C16.8771 10.2489 16.1401 9.35087 15.1945 8.71905C14.2489 8.08723 13.1372 7.75 12 7.75H9.5C9.30109 7.75 9.11032 7.67098 8.96967 7.53033C8.82902 7.38968 8.75 7.19891 8.75 7C8.75 6.80109 8.82902 6.61032 8.96967 6.46967C9.11032 6.32902 9.30109 6.25 9.5 6.25H12C13.9228 6.25 15.7669 7.01384 17.1265 8.37348C18.4862 9.73311 19.25 11.5772 19.25 13.5C19.25 15.4228 18.4862 17.2669 17.1265 18.6265C15.7669 19.9862 13.9228 20.75 12 20.75Z" fill="#000000"/>
