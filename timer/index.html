@@ -67,8 +67,10 @@
       }
 
       :root {
-        --color: light-dark(#1e2730, #fafafa);
-        --background-color: light-dark(#fafafa, #1e2730);
+        /* Since the background colors are too bright, 
+        the theme is going to be on the text color instead */
+        --color: light-dark(#fafafa, #1e2730);
+        --background-color: "#1a7cbd";
         color-scheme: var(--color-scheme, dark light);
       }
       /* </theme> */
@@ -140,6 +142,10 @@
 
       interval-timer {
         user-select: none;
+
+        &:not(:defined) {
+          visibility: hidden;
+        }
 
         &[running] {
           button[name="play"] {
