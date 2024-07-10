@@ -142,6 +142,16 @@
 
       interval-timer {
         user-select: none;
+        display: grid;
+        gap: 3rem;
+
+        [slot="duration"] {
+          font-size: 6rem;
+        }
+
+        > * {
+          margin: 0;
+        }
 
         &:not(:defined) {
           visibility: hidden;
@@ -195,8 +205,10 @@
   <body>
     <main>
       <interval-timer id="intervalTimer">
-        <h3 slot="set">1</h3>
-        <h1><span slot="minutes">00</span>:<span slot="seconds">00</span></h1>
+        <h2 slot="set">1</h2>
+        <h1 slot="duration">
+          <span slot="minutes">00</span>:<span slot="seconds">00</span>
+        </h1>
         <h2
           slot="activity"
           style="text-transform: uppercase; opacity: 0.7"
