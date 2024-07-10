@@ -118,27 +118,32 @@
     </style>
   </head>
   <body>
-    <header></header>
     <main>
-      <interval-timer id="intervalTimer">
-        <h3 id="set">1</h3>
-        <h1><span id="minutes">00</span>:<span id="seconds">00</span></h1>
-        <h2 id="activity" style="text-transform: uppercase; opacity: 0.7"></h2>
+      <interval-timer-menu>
+        <interval-timer id="intervalTimer">
+          <h3 slot="set">1</h3>
+          <h1><span slot="minutes">00</span>:<span slot="seconds">00</span></h1>
+          <h2
+            slot="activity"
+            style="text-transform: uppercase; opacity: 0.7"
+          ></h2>
 
-        <form style="display: none">
-          <input value="3" name="sets" type="number" />
-          <input value="00" name="preparation-minutes" type="number" />
-          <input value="00" name="preparation-seconds" type="number" />
-          <input value="01" name="work-minutes" type="number" />
-          <input value="00" name="work-seconds" type="number" />
-          <input value="00" name="rest-minutes" type="number" />
-          <input value="20" name="rest-seconds" type="number" />
-          <input value="00" name="cooldown-minutes" type="number" />
-          <input value="00" name="cooldown-seconds" type="number" />
-        </form>
+          <form style="display: none">
+            <!-- interval-timer "arguments" -->
+            <input value="3" name="sets" type="number" />
+            <input value="00" name="preparation-minutes" type="number" />
+            <input value="00" name="preparation-seconds" type="number" />
+            <input value="01" name="work-minutes" type="number" />
+            <input value="00" name="work-seconds" type="number" />
+            <input value="00" name="rest-minutes" type="number" />
+            <input value="20" name="rest-seconds" type="number" />
+            <input value="00" name="cooldown-minutes" type="number" />
+            <input value="00" name="cooldown-seconds" type="number" />
+          </form>
 
-        <button id="startButton" type="button">START</button>
-      </interval-timer>
+          <button id="startButton" type="button">START</button>
+        </interval-timer>
+      </interval-timer-menu>
     </main>
     <script src="/components/interval-timer.js" type="module"></script>
     <script></script>
