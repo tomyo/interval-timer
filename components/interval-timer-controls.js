@@ -14,7 +14,7 @@ customElements.define(
           this.intervalTimer.previousActivity();
           break;
         case "next":
-          this.intervalTimer.nextActivity();
+          this.intervalTimer.doNextActivity();
           break;
       }
     }

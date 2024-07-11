@@ -189,19 +189,15 @@
 
       // Show/Hide controls when cliking the it's content
 
-      const hideAfterSomeTime = debounce(() => {
+      const hideControlsAfterSomeTime = debounce(() => {
         if (intervalTimer.hasAttribute("running"))
           // Hide controls after runnig for some time
           intervalTimerControl.removeAttribute("show");
       }, 2000);
 
       intervalTimer.addEventListener("click", (event) => {
-        if (!intervalTimer.hasAttribute("running"))
-          // If timer is paused, controls should be visible already.
-          assert(intervalTimerControl.hasAttribute("show"));
-
         intervalTimerControl.setAttribute("show", "");
-        hideAfterSomeTime();
+        hideControlsAfterSomeTime();
       });
     </script>
   </body>

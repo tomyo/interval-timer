@@ -1,19 +1,4 @@
-let intervalId, activities, currentActivity, audioContext, soundVolume;
-
-// The timer follows the order of this list
-// For each activity, an input with name `${activity}-minutes` and `${activity}-seconds` is expected
-const ACTIVITIES = ["preparation", "work", "rest", "cooldown"];
-
-function* getActivities({ startAt = ACTIVITIES[0] } = {}) {
-  let started = false;
-  for (const activity of ACTIVITIES) {
-    if (!started) {
-      if (activity != startAt) continue;
-      started = true;
-    }
-    yield activity;
-  }
-}
+let intervalId, activities, currentActivity, audioContext;
 
 /**
  * Custom element for an interval timer
@@ -33,104 +18,14 @@ customElements.define(
       this.minutes = this.querySelector("[slot=minutes]");
       this.seconds = this.querySelector("[slot=seconds]");
       this.activity = this.querySelector("[slot=activity]");
+      this.sets = this.querySelector("input[name=sets]");
     }
 
     setUpIntervalTimer() {
-      activities = getActivities();
-
-      do {
-        this.setCurrentActivity(activities.next().value);
-        this.set.textContent = document.querySelector("input[name=sets]").value;
-      } while (!this.getCurrentActivityDuration());
-    }
-
-    setCurrentActivity(act) {
-      currentActivity = act;
-
-      this.activity.textContent = currentActivity == "preparation" ? "prepare" : currentActivity; // Preparation is too long
-
-      this.minutes.textContent = this.querySelector(`[name=${currentActivity}-minutes]`).value;
-      this.seconds.textContent = this.querySelector(`[name=${currentActivity}-seconds]`).value;
-
-      // bg color
-      let color = "#1a7cbd"; // rest and cooldown
-      if (currentActivity == "preparation") color = "#c85100";
-      if (currentActivity == "work") color = "#008943";
-
-      document.documentElement.style.setProperty("--background-color", color);
-    }
-
-    /**
-     * Get the current activity duration in seconds
-     * @returns {number} The current activity duration in seconds
-     */
-    getCurrentActivityDuration() {
-      return Number(this.minutes.textContent) * 60 + Number(this.seconds.textContent);
-    }
-
-    isCurrentSetLast() {
-      return this.set.textContent == 1;
-    }
-
-    nextActivity() {
-      if (currentActivity == "work" && this.isCurrentSetLast())
-        // When working on the last set, we'll skip the rest activity.
-        // We are either done or we are going to cooldown.
-        activities.next();
-
-      if (currentActivity == "rest") {
-        assert(
-          !this.isCurrentSetLast(),
-          `We shouldn't be resting as a last activity, work or cooldown can only be the last activity.`
-        );
-        // Start over with the first workout activity (skip preparation)
-        activities = getActivities({ startAt: "work" });
-        this.set.textContent -= 1;
-      }
-
-      if (currentActivity == "cooldown") return this.finish();
-
-      // Normal flow where a next activity is available
+      this.set.textContent = this.sets.value;
+      activities = this.activitiesGenerator({ sets: this.sets.value });
       this.setCurrentActivity(activities.next().value);
-
-      if (!this.getCurrentActivityDuration()) {
-        // Probably a "cooldown" or "rest" activity not set (thus having no duration)
-        this.nextActivity();
-      }
-
-      playBeep();
     }
-
-    previousActivity() {
-      if (ACTIVITIES.indexOf(currentActivity) < 1) return;
-
-      this.setCurrentActivity(ACTIVITIES[ACTIVITIES.indexOf(currentActivity) - 1]);
-      // TODO: skip last rest activity when going back from cooldown
-    }
-
-    /**
-     * Tick the timer one second
-     * @returns {void}
-     */
-    tick = () => {
-      let m = Number(this.minutes.textContent);
-      let s = Number(this.seconds.textContent);
-
-      // A second passed
-      if (s == 0) {
-        m = m - 1;
-        s = 59;
-      } else {
-        s = s - 1;
-      }
-
-      if (m == 0 && s == 0) {
-        return this.nextActivity();
-      }
-
-      this.seconds.textContent = s.toString().padStart(2, "0");
-      this.minutes.textContent = m.toString().padStart(2, "0");
-    };
 
     startIntervalTimer() {
       if (intervalId) return console.warn("Timer already running");
@@ -148,6 +43,33 @@ customElements.define(
       this.removeAttribute("running");
     }
 
+    setCurrentActivity(activity) {
+      currentActivity = activity;
+
+      if (!currentActivity) return this.finish();
+
+      this.minutes.textContent = this.querySelector(`[name=${currentActivity}-minutes]`).value;
+      this.seconds.textContent = this.querySelector(`[name=${currentActivity}-seconds]`).value;
+      this.activity.textContent = currentActivity == "preparation" ? "prepare" : currentActivity; // Preparation is too long
+
+      if (this.hasAttribute("running")) playBeep({ times: 1 });
+
+      // bg color
+      let color = "#1a7cbd"; // rest and cooldown
+      if (currentActivity == "preparation") color = "#c85100";
+      if (currentActivity == "work") color = "#008943";
+
+      document.documentElement.style.setProperty("--background-color", color);
+    }
+
+    doNextActivity() {
+      if (currentActivity == "rest") {
+        // We have completed a set
+        this.set.textContent -= 1;
+      }
+      this.setCurrentActivity(activities.next().value);
+    }
+
     finish() {
       if (this.hasAttribute("finished")) return console.warn("Timer already finished");
       if (intervalId) this.pauseIntervalTimer();
@@ -156,12 +78,101 @@ customElements.define(
       this.activity.textContent = "finished";
       activities = null;
     }
+
+    /**
+     * Get the activities that have a duration set.
+     * For each activity, children inputs are expected with the names
+     *  `${activity}-minutes` and `${activity}-seconds`
+     *
+     * @returns {string[]} The list of activities available to do
+     */
+    getAvailableActivities() {
+      const allActivities = ["preparation", "work", "rest", "cooldown"];
+      return allActivities.filter((activity) => {
+        const m = this.querySelector(`[name=${activity}-minutes]`);
+        const s = this.querySelector(`[name=${activity}-seconds]`);
+        return m?.value > 0 || s?.value > 0;
+      });
+    }
+
+    /**
+     *
+     * @param {Object} options
+     * @param {string} options.startAt - The activity to start at
+     * @param {number} options.sets - The number of sets to do (> 0)
+     * @returns {Generator<string>}
+     */
+    *activitiesGenerator({ startAt = "preparation", sets = 1 } = {}) {
+      let started = false;
+      let currentSet = sets;
+
+      while (currentSet > 0) {
+        for (const activity of this.getAvailableActivities()) {
+          if (!started) {
+            // Skip until we find activity to start at
+            if (activity != startAt) continue;
+            started = true;
+          }
+
+          if (activity == "preparation") {
+            // Skip preparation after the first set
+            if (currentSet != sets) continue;
+          }
+          if (activity == "cooldown") {
+            // Skip cooldown until the last set
+            if (currentSet > 1) continue;
+          }
+          if (activity == "rest") {
+            // Skip rest on the last set
+            if (currentSet == 1) continue;
+          }
+
+          yield activity;
+        }
+        currentSet--;
+      }
+    }
+
+    /**
+     * Tick the timer one second.
+     * If the time is up, move to the next activity.
+     * @returns {void}
+     */
+    tick = () => {
+      // A second has passed
+      let m = Number(this.minutes.textContent);
+      let s = Number(this.seconds.textContent);
+
+      // Update display
+      if (s == 0) {
+        m = m - 1;
+        s = 59;
+      } else {
+        s = s - 1;
+      }
+      this.seconds.textContent = s.toString().padStart(2, "0");
+      this.minutes.textContent = m.toString().padStart(2, "0");
+
+      if (m == 0 && s == 0) {
+        // Time is up
+        return this.doNextActivity();
+      }
+
+      if (m == 0 && s < 3) {
+        // Last 3 seconds
+        playBeep();
+      }
+    };
   }
 );
 
 /**
  * Play a beep sound
- * @param {AudioContext} audioContext The audio context to use, a new is created if not provided
+ * @param {object} options
+ * @param {number} options.volume - The volume of the beep (0-1)
+ * @param {number} options.length - The length of the beep (in seconds)
+ * @param {number} options.times - The number of times the beep should repeat, the pause is the same `length` as the beep
+ *
  * @returns {AudioContext} The audio context
  */
 function playBeep({ volume = 0.4, length = 0.2, times = 1 } = {}) {
