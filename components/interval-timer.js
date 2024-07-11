@@ -31,7 +31,7 @@ customElements.define(
       if (intervalId) return console.warn("Timer already running");
       if (!activities) this.setUpIntervalTimer();
 
-      playBeep();
+      playBeep({ length: 0.5 });
       intervalId = setInterval(this.tick, 1000);
       this.setAttribute("running", "");
       this.removeAttribute("finished");
@@ -44,20 +44,34 @@ customElements.define(
     }
 
     setCurrentActivity(activity) {
+      let color = "#1a7cbd";
+      let beepOptions = { length: 0.6 };
       currentActivity = activity;
 
       if (!currentActivity) return this.finish();
 
+      switch (currentActivity) {
+        case "preparation":
+          this.activity.textContent = "prepare"; // Preparation is too long
+          color = "#c85100";
+          break;
+        case "work":
+          color = "#008943";
+          beepOptions = { times: 2 };
+          break;
+        case "rest":
+          color = "#1a7cbd";
+          break;
+        case "cooldown":
+          color = "#1a7cbd";
+          break;
+      }
+
+      playBeep(beepOptions);
+
       this.minutes.textContent = this.querySelector(`[name=${currentActivity}-minutes]`).value;
       this.seconds.textContent = this.querySelector(`[name=${currentActivity}-seconds]`).value;
-      this.activity.textContent = currentActivity == "preparation" ? "prepare" : currentActivity; // Preparation is too long
-
-      if (this.hasAttribute("running")) playBeep({ times: 1 });
-
-      // bg color
-      let color = "#1a7cbd"; // rest and cooldown
-      if (currentActivity == "preparation") color = "#c85100";
-      if (currentActivity == "work") color = "#008943";
+      this.activity.textContent = currentActivity;
 
       document.documentElement.style.setProperty("--background-color", color);
     }
@@ -158,7 +172,7 @@ customElements.define(
         return this.doNextActivity();
       }
 
-      if (m == 0 && s < 3) {
+      if (m == 0 && s < 4) {
         // Last 3 seconds
         playBeep();
       }
@@ -193,7 +207,9 @@ function playBeep({ volume = 0.4, length = 0.2, times = 1 } = {}) {
   // Set the frequency of the oscillator (in Hz)
   const f5 = 698.46;
   const f_5 = 739.99;
-  oscillator.frequency.setValueAtTime(f_5, audioContext.currentTime);
+  const a_5 = 880.0;
+  const freq = 1024;
+  oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
 
   // Set the volume of the oscillator
   volume = Math.min(1, Math.max(0, volume));
