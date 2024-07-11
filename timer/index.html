@@ -107,6 +107,12 @@
           visibility: hidden;
         }
 
+        &[ready] {
+          [slot="set"] {
+            visibility: hidden;
+          }
+        }
+
         &[running] {
           button[name="play"] {
             display: none;

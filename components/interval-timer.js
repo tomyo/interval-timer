@@ -25,6 +25,7 @@ customElements.define(
       this.set.textContent = this.sets.value;
       activities = this.activitiesGenerator({ sets: this.sets.value });
       this.setCurrentActivity(activities.next().value);
+      this.setAttribute("ready", "");
     }
 
     startIntervalTimer() {
@@ -35,6 +36,7 @@ customElements.define(
       intervalId = setInterval(this.tick, 1000);
       this.setAttribute("running", "");
       this.removeAttribute("finished");
+      this.removeAttribute("ready");
     }
 
     pauseIntervalTimer() {
