@@ -46,13 +46,14 @@ customElements.define(
     setCurrentActivity(activity) {
       let color = "#1a7cbd";
       let beepOptions = { length: 0.6 };
+      let activityText = activity;
       currentActivity = activity;
 
       if (!currentActivity) return this.finish();
 
       switch (currentActivity) {
         case "preparation":
-          this.activity.textContent = "prepare"; // Preparation is too long
+          activityText = "prepare"; // Preparation is too long
           color = "#c85100";
           break;
         case "work":
@@ -71,7 +72,7 @@ customElements.define(
 
       this.minutes.textContent = this.querySelector(`[name=${currentActivity}-minutes]`).value;
       this.seconds.textContent = this.querySelector(`[name=${currentActivity}-seconds]`).value;
-      this.activity.textContent = currentActivity;
+      this.activity.textContent = activityText;
 
       document.documentElement.style.setProperty("--background-color", color);
     }
