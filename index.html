@@ -256,6 +256,10 @@
           border-color: currentColor;
           border-width: 1px;
 
+          @media screen and (prefers-color-scheme: light) {
+            border-width: 2px;
+          }
+
           legend {
             text-transform: uppercase;
             font-weight: bold;
