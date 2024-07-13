@@ -1,0 +1,54 @@
+{
+  "name": "INTERVAL TIMER",
+  "short_name": "TIMER",
+  "start_url": "https://timer.trasla.com.ar/",
+  "display": "standalone",
+  "description": "Simple and easy to use all purposes interval timer.",
+  "lang": "en",
+  "dir": "auto",
+  "theme_color": "#1e2730",
+  "background_color": "#1e2730",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://timer.trasla.com.ar/assets/images/screenshots/screen1.png",
+      "sizes": "2880x1800",
+      "type": "image/png",
+      "description": "A screenshot of the timer in action"
+    }
+  ],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "test",
+      "url": "/timer/",
+      "description": "test description"
+    }
+  ]
+}
