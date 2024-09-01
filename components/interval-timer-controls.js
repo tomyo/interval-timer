@@ -14,8 +14,8 @@ customElements.define(
       switch (event.target.closest("button").name) {
         case "play":
         case "replay":
-          this.intervalTimer.startIntervalTimer();
           this.preventScreenLock();
+          this.intervalTimer.startIntervalTimer();
           break;
         case "pause":
           this.intervalTimer.pauseIntervalTimer();
