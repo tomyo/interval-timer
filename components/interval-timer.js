@@ -55,7 +55,7 @@ customElements.define(
 
       switch (currentActivity) {
         case "preparation":
-          activityText = "prepare"; // Preparation is too long
+          activityText = "prepare"; // "Preparation" is too long
           color = "#c85100";
           break;
         case "work":
@@ -80,7 +80,12 @@ customElements.define(
     }
 
     doNextActivity() {
-      if (currentActivity == "rest") {
+      this.set.removeAttribute("hidden");
+
+      const aSetWasDone =
+        currentActivity == "rest" ||
+        (!this.getAvailableActivities().includes("rest") && currentActivity == "work");
+      if (aSetWasDone) {
         // We have completed a set
         this.set.textContent -= 1;
       }

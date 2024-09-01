@@ -107,12 +107,6 @@
           visibility: hidden;
         }
 
-        &[ready] {
-          [slot="set"] {
-            visibility: hidden;
-          }
-        }
-
         &[running] {
           button[name="play"] {
             display: none;
@@ -163,7 +157,7 @@
   <body>
     <main>
       <interval-timer id="intervalTimer">
-        <h2 slot="set">1</h2>
+        <h2 slot="set" hidden>1</h2>
         <h1 slot="duration"><span slot="minutes">00</span>:<span slot="seconds">00</span></h1>
         <h2 slot="activity" style="text-transform: uppercase; opacity: 0.7"></h2>
 
