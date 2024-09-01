@@ -48,7 +48,7 @@ customElements.define(
 
     setCurrentActivity(activity) {
       let color = "#1a7cbd";
-      let beepOptions = { length: 0.6 };
+      const beepOptions = {};
       let activityText = activity;
       currentActivity = activity;
 
@@ -61,7 +61,7 @@ customElements.define(
           break;
         case "work":
           color = "#008943";
-          beepOptions = { times: 2 };
+          beepOptions.times = 2;
           break;
         case "rest":
           color = "#1a7cbd";
@@ -185,7 +185,7 @@ customElements.define(
 
       if (m == 0 && s < 4) {
         // Last 3 seconds
-        playBeep();
+        playBeep({ length: 0.1 });
       }
     };
   }
