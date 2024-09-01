@@ -35,6 +35,8 @@ customElements.define(
 
       try {
         this.wakeLock = await navigator.wakeLock.request("screen");
+
+        this.wakeLock.addEventListener("release", () => console.log("Wake Lock has been released"));
       } catch (err) {
         console.error(`Could not lock screen: ${err.name}, ${err.message}`);
       }
