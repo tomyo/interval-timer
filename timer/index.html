@@ -107,20 +107,20 @@
           visibility: hidden;
         }
 
-        &[running] {
+        &[state="running"] {
           button[name="play"] {
             display: none;
           }
         }
 
-        &[finished] {
+        &[state="finished"] {
           [slot="set"],
           [slot="duration"] {
             display: none;
           }
         }
 
-        &:not([running]) button[name="pause"] {
+        &:not([state="running"]) button[name="pause"] {
           display: none;
         }
 
@@ -192,7 +192,7 @@
       // Show/Hide controls when cliking the it's content
 
       const hideControlsAfterSomeTime = debounce(() => {
-        if (intervalTimer.hasAttribute("running"))
+        if (intervalTimer.getAttribute("state") == "running")
           // Hide controls after runnig for some time
           intervalTimerControl.removeAttribute("show");
       }, 2000);

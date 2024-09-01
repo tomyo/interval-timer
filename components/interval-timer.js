@@ -19,13 +19,14 @@ customElements.define(
       this.seconds = this.querySelector("[slot=seconds]");
       this.activity = this.querySelector("[slot=activity]");
       this.sets = this.querySelector("input[name=sets]");
+      this.startedAt = null;
     }
 
     setUpIntervalTimer() {
       this.set.textContent = this.sets.value;
       activities = this.activitiesGenerator({ sets: this.sets.value });
       this.setCurrentActivity(activities.next().value);
-      this.setAttribute("ready", "");
+      this.setAttribute("state", "ready");
     }
 
     startIntervalTimer() {
@@ -34,15 +35,15 @@ customElements.define(
 
       playBeep({ length: 0.5 });
       intervalId = setInterval(this.tick, 1000);
-      this.setAttribute("running", "");
-      this.removeAttribute("finished");
-      this.removeAttribute("ready");
+      this.setAttribute("state", "running");
+
+      this.startedAt = new Date();
     }
 
     pauseIntervalTimer() {
       if (!intervalId) return console.warn("Timer not running");
       intervalId = clearInterval(intervalId);
-      this.removeAttribute("running");
+      this.setAttribute("state", "paused");
     }
 
     setCurrentActivity(activity) {
@@ -70,7 +71,7 @@ customElements.define(
           break;
       }
 
-      playBeep(beepOptions);
+      if (this.getAttribute("state") == "running") playBeep(beepOptions);
 
       this.minutes.textContent = this.querySelector(`[name=${currentActivity}-minutes]`).value;
       this.seconds.textContent = this.querySelector(`[name=${currentActivity}-seconds]`).value;
@@ -93,10 +94,10 @@ customElements.define(
     }
 
     finish() {
-      if (this.hasAttribute("finished")) return console.warn("Timer already finished");
+      if (this.getAttribute("state") == "finished") return console.warn("Timer already finished");
       if (intervalId) this.pauseIntervalTimer();
       playBeep({ times: 3 });
-      this.setAttribute("finished", "");
+      this.setAttribute("state", "finished");
       this.activity.textContent = "finished";
       activities = null;
     }

@@ -136,7 +136,7 @@ customElements.define(
           }
 
           /* Hide buttons when not needed based on interval-timer state */
-          interval-timer:not([finished]) interval-timer-controls {
+          interval-timer:not([state="finished"]) interval-timer-controls {
             [name="close"], [name="replay"] {
               display: none;
             }
@@ -145,7 +145,7 @@ customElements.define(
               animation: hideContent 1s ease-in forwards;
             }
           }
-          interval-timer[finished] interval-timer-controls {
+          interval-timer[state="finished"] interval-timer-controls {
             [name="pause"], [name="play"], [name="next"], [name="prev"] {
               display: none;
             }
