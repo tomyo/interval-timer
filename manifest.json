@@ -1,6 +1,6 @@
 {
   "name": "INTERVAL TIMER",
-  "short_name": "TIMER",
+  "id": "timer.trasla.com.ar",
   "start_url": "https://timer.trasla.com.ar/",
   "display": "standalone",
   "orientation": "portrait",
@@ -13,14 +13,12 @@
     {
       "src": "assets/images/icon-256x256.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     },
     {
       "src": "assets/images/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     }
   ],
   "screenshots": [
@@ -30,6 +28,5 @@
       "type": "image/png",
       "description": "A screenshot of the timer in action"
     }
-  ],
-  "prefer_related_applications": false
+  ]
 }
