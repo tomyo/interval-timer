@@ -1,14 +1,25 @@
 customElements.define(
   "interval-timer-controls",
   class extends HTMLElement {
+    constructor() {
+      super();
+      this.intervalTimer = this.closest("interval-timer");
+      this.wakeLock = null;
+
+      this.addEventListener("click", this);
+      this.render();
+    }
+
     handleEvent(event) {
       switch (event.target.closest("button").name) {
         case "play":
         case "replay":
           this.intervalTimer.startIntervalTimer();
+          this.preventScreenLock();
           break;
         case "pause":
           this.intervalTimer.pauseIntervalTimer();
+          this.releaseScreenLock();
           break;
         case "prev":
           // TODO: this.intervalTimer.previousActivity();
@@ -19,12 +30,24 @@ customElements.define(
       }
     }
 
-    constructor() {
-      super();
-      this.intervalTimer = this.closest("interval-timer");
+    async preventScreenLock() {
+      if (!("wakeLock" in navigator)) return;
 
-      this.addEventListener("click", this);
+      try {
+        this.wakeLock = await navigator.wakeLock.request("screen");
+      } catch (err) {
+        console.error(`Could not lock screen: ${err.name}, ${err.message}`);
+      }
+    }
 
+    async releaseScreenLock() {
+      if (!this.wakeLock) return;
+
+      await this.wakeLock.release();
+      this.wakeLock = null;
+    }
+
+    render() {
       this.innerHTML = /*html*/ `
         <a class="button" name="exit" href="/">
           <svg
@@ -103,28 +126,6 @@ customElements.define(
           </svg>
         </button>
         <style>
-          @keyframes hideContent {
-            0% {
-              opacity: 1;
-              visibility: visible;
-            }
-            100% {
-              opacity: 0;
-              visibility: hidden;
-            }
-          }
-
-          @keyframes showContent {
-            0% {
-              opacity: 0;
-              visibility: hidden;
-            }
-            100% {
-              opacity: 1;
-              visibility: visible;
-            }
-          }
-
           interval-timer-controls {
             /* Show/Hide animation */
             
@@ -150,6 +151,28 @@ customElements.define(
             }
 
             margin-top: 4rem;
+          }
+
+          @keyframes hideContent {
+            0% {
+              opacity: 1;
+              visibility: visible;
+            }
+            100% {
+              opacity: 0;
+              visibility: hidden;
+            }
+          }
+
+          @keyframes showContent {
+            0% {
+              opacity: 0;
+              visibility: hidden;
+            }
+            100% {
+              opacity: 1;
+              visibility: visible;
+            }
           }
         </style>
       `;
