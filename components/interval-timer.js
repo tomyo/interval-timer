@@ -161,6 +161,8 @@ customElements.define(
      * @returns {void}
      */
     tick = () => {
+      playBeep({ volume: 0.03, length: 0.05 });
+
       // A second has passed
       let m = Number(this.minutes.textContent);
       let s = Number(this.seconds.textContent);
