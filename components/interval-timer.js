@@ -161,7 +161,7 @@ customElements.define(
      * @returns {void}
      */
     tick = () => {
-      playBeep({ volume: 0.03, length: 0.05 });
+      playBeep({ volume: 0.001, length: 0.01 }); // Hack to avoid page to be suspended while ticking
 
       // A second has passed
       let m = Number(this.minutes.textContent);
