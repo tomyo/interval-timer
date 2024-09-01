@@ -144,22 +144,68 @@
                 <input name="sets" type="number" value="3" />
               </input-repetitions>
               <input-duration class="timer-input" style="display: none">
-                <label style="font-weight: 400" title="How long is the final rest time?">PREPARATION</label>
+                <label style="font-weight: 400" title="Preparation time">PREPARATION</label>
                 <input value="00" name="preparation-minutes" type="number" min="0" />
                 <span>:</span>
                 <input value="10" name="preparation-seconds" type="number" min="0" />
               </input-duration>
               <input-duration class="timer-input">
-                <label style="font-weight: 400" title="How long is the final rest time?">WORK</label>
+                <label style="font-weight: 400" title="Work time">WORK</label>
                 <input value="01" name="work-minutes" type="number" min="0" />
                 <span>:</span>
                 <input value="00" name="work-seconds" type="number" min="0" />
               </input-duration>
               <input-duration class="timer-input">
-                <label style="font-weight: 400" title="How long is the final rest time?">REST</label>
+                <label style="font-weight: 400" title="Rest time after work">REST</label>
                 <input value="00" name="rest-minutes" type="number" min="0" />
                 <span>:</span>
                 <input value="20" name="rest-seconds" type="number" min="0" />
+              </input-duration>
+            </div>
+            <button>
+              <svg
+                width="50px"
+                height="50px"
+                stroke="currentColor"
+                fill="transparent"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16.6582 9.28638C18.098 10.1862 18.8178 10.6361 19.0647 11.2122C19.2803 11.7152 19.2803 12.2847 19.0647 12.7878C18.8178 13.3638 18.098 13.8137 16.6582 14.7136L9.896 18.94C8.29805 19.9387 7.49907 20.4381 6.83973 20.385C6.26501 20.3388 5.73818 20.0469 5.3944 19.584C5 19.053 5 18.1108 5 16.2264V7.77357C5 5.88919 5 4.94701 5.3944 4.41598C5.73818 3.9531 6.26501 3.66111 6.83973 3.6149C7.49907 3.5619 8.29805 4.06126 9.896 5.05998L16.6582 9.28638Z"
+                  stroke-width="1"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </form>
+        </fieldset>
+
+        <fieldset>
+          <legend>Piernas</legend>
+          <form action="/timer/">
+            <div class="info">
+              <input-repetitions>
+                <label title="How many repetitions?">SETS</label>
+                <input name="sets" type="number" value="3" />
+              </input-repetitions>
+              <input-duration class="timer-input" style="display: none">
+                <label style="font-weight: 400" title="Preparation time">PREPARATION</label>
+                <input value="00" name="preparation-minutes" type="number" min="0" />
+                <span>:</span>
+                <input value="10" name="preparation-seconds" type="number" min="0" />
+              </input-duration>
+              <input-duration class="timer-input">
+                <label style="font-weight: 400" title="Work time">WORK</label>
+                <input value="01" name="work-minutes" type="number" min="0" />
+                <span>:</span>
+                <input value="30" name="work-seconds" type="number" min="0" />
+              </input-duration>
+              <input-duration class="timer-input">
+                <label style="font-weight: 400" title="Rest time after work">REST</label>
+                <input value="00" name="rest-minutes" type="number" min="0" />
+                <span>:</span>
+                <input value="00" name="rest-seconds" type="number" min="0" />
               </input-duration>
             </div>
             <button>
@@ -190,22 +236,68 @@
                 <input name="sets" type="number" value="3" />
               </input-repetitions>
               <input-duration class="timer-input" style="display: none">
-                <label style="font-weight: 400" title="How long is the final rest time?">PREPARATION</label>
+                <label style="font-weight: 400" title="Preparation time">PREPARATION</label>
                 <input value="00" name="preparation-minutes" type="number" min="0" />
                 <span>:</span>
                 <input value="10" name="preparation-seconds" type="number" min="0" />
               </input-duration>
               <input-duration class="timer-input">
-                <label style="font-weight: 400" title="How long is the final rest time?">WORK</label>
-                <input value="01" name="work-minutes" type="number" min="0" />
+                <label style="font-weight: 400" title="Work time">WORK</label>
+                <input value="03" name="work-minutes" type="number" min="0" />
                 <span>:</span>
-                <input value="30" name="work-seconds" type="number" min="0" />
+                <input value="00" name="work-seconds" type="number" min="0" />
               </input-duration>
               <input-duration class="timer-input">
-                <label style="font-weight: 400" title="How long is the final rest time?">REST</label>
+                <label style="font-weight: 400" title="Rest time after work">REST</label>
                 <input value="00" name="rest-minutes" type="number" min="0" />
                 <span>:</span>
                 <input value="00" name="rest-seconds" type="number" min="0" />
+              </input-duration>
+            </div>
+            <button>
+              <svg
+                width="50px"
+                height="50px"
+                stroke="currentColor"
+                fill="transparent"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16.6582 9.28638C18.098 10.1862 18.8178 10.6361 19.0647 11.2122C19.2803 11.7152 19.2803 12.2847 19.0647 12.7878C18.8178 13.3638 18.098 13.8137 16.6582 14.7136L9.896 18.94C8.29805 19.9387 7.49907 20.4381 6.83973 20.385C6.26501 20.3388 5.73818 20.0469 5.3944 19.584C5 19.053 5 18.1108 5 16.2264V7.77357C5 5.88919 5 4.94701 5.3944 4.41598C5.73818 3.9531 6.26501 3.66111 6.83973 3.6149C7.49907 3.5619 8.29805 4.06126 9.896 5.05998L16.6582 9.28638Z"
+                  stroke-width="1"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </form>
+        </fieldset>
+
+        <fieldset>
+          <legend>Reto de la confianza</legend>
+          <form action="/timer/">
+            <div class="info">
+              <input-repetitions>
+                <label title="How many repetitions?">SETS</label>
+                <input name="sets" type="number" value="1" />
+              </input-repetitions>
+              <input-duration class="timer-input" style="display: none">
+                <label style="font-weight: 400" title="Preparation time">PREPARATION</label>
+                <input value="00" name="preparation-minutes" type="number" min="0" />
+                <span>:</span>
+                <input value="10" name="preparation-seconds" type="number" min="0" />
+              </input-duration>
+              <input-duration class="timer-input">
+                <label style="font-weight: 400" title="Work time">WORK</label>
+                <input value="03" name="work-minutes" type="number" min="0" />
+                <span>:</span>
+                <input value="00" name="work-seconds" type="number" min="0" />
+              </input-duration>
+              <input-duration class="timer-input">
+                <label style="font-weight: 400" title="Rest time after work">COOLDOWN</label>
+                <input value="03" name="cooldown-minutes" type="number" min="0" />
+                <span>:</span>
+                <input value="00" name="cooldown-seconds" type="number" min="0" />
               </input-duration>
             </div>
             <button>
@@ -269,9 +361,21 @@
           form {
             display: flex;
 
+            > :first-child {
+              flex: 1;
+            }
+
+            > :last-child {
+              flex: 0;
+            }
+
             .info > * {
               display: flex;
               align-items: center;
+
+              label {
+                min-width: 11ch;
+              }
             }
 
             label {
