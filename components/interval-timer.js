@@ -47,8 +47,9 @@ customElements.define(
     }
 
     setCurrentActivity(activity) {
-      let color = "#1a7cbd";
       const beepOptions = {};
+      if (activity) this.setAttribute("activity", activity);
+      else this.removeAttribute("activity", activity);
       let activityText = activity;
       currentActivity = activity;
 
@@ -57,17 +58,9 @@ customElements.define(
       switch (currentActivity) {
         case "preparation":
           activityText = "prepare"; // "Preparation" is too long
-          color = "#c85100";
           break;
         case "work":
-          color = "#008943";
           beepOptions.times = 2;
-          break;
-        case "rest":
-          color = "#1a7cbd";
-          break;
-        case "cooldown":
-          color = "#1a7cbd";
           break;
       }
 
@@ -76,8 +69,6 @@ customElements.define(
       this.minutes.textContent = this.querySelector(`[name=${currentActivity}-minutes]`).value;
       this.seconds.textContent = this.querySelector(`[name=${currentActivity}-seconds]`).value;
       this.activity.textContent = activityText;
-
-      document.documentElement.style.setProperty("--background-color", color);
     }
 
     doNextActivity() {

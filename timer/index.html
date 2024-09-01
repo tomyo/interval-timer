@@ -73,6 +73,14 @@
         transition: all ease-in-out 0.2s;
 
         overflow: hidden;
+
+        --background-color: #1a7cbd;
+        &:has(interval-timer[activity="preparation"]) {
+          --background-color: #c85100;
+        }
+        &:has(interval-timer[activity="work"]) {
+          --background-color: #008943;
+        }
       }
 
       input {
